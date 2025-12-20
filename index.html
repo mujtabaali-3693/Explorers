@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login & Signup | Explorers</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Ranchers&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Schoolbell&display=swap');  
+@import url('https://fonts.googleapis.com/css2?family=Iceberg&display=swap');
+body {
+  background-image: url("background-login.jpg");
+            background-repeat: no-repeat; /* Prevents the image from repeating */
+            background-size: cover;      /* Scales the image to cover the entire container */
+            background-attachment: fixed;/* Fixes the image so it doesn't scroll with content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.container {
+  background: transparent;
+  backdrop-filter: blur(5px);
+  padding: 20px;
+  width: 320px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+ 
+}
+input{
+    background:transparent;
+    color: white;
+    font-family: "Iceberg", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+}
+button {
+  background: transparent;
+  backdrop-filter: blur(5px);
+  color: white;
+  border-radius: 2px;
+  border-color:rgba(168, 170, 168, 0.333);
+  cursor: pointer;
+ font-family: "Schoolbell", cursive;
+  font-weight: 400;
+  font-style: normal;
+
+}
+p { color: #007bff; cursor: pointer;
+     font-family: "Ranchers", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+
+}
+h2{
+    color: white;
+    font-family: "Ranchers", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="container" id="loginBox">
+  <h2>Login</h2>
+  <input id="liUser" placeholder="Name ">
+  <input id="liPass" type="password" placeholder="Password" data-real="">
+  <button onclick="login()">Login</button>
+  <p onclick="showSignup()">Don't have an account? Sign Up</p>
+</div>
+
+<!-- SIGNUP -->
+<div class="container" id="signupBox" style="display:none;">
+  <h2>Sign Up</h2>
+  <input id="suUser" placeholder="Username">
+  <input id="suPass" type="password" placeholder="Password" data-real="">
+  <button onclick="signup()">Sign Up</button>
+  <p onclick="showLogin()">Already have an account? Login</p>
+</div>
+
+<script>
+// Toggle forms
+const loginBox = document.getElementById("loginBox");
+const signupBox = document.getElementById("signupBox");
+
+function showSignup() {
+  loginBox.style.display = "none";
+  signupBox.style.display = "block";
+}
+function showLogin() {
+  signupBox.style.display = "none";
+  loginBox.style.display = "block";
+}
+
+// Signup/Login
+function signup() {
+  const u = suUser.value;
+  const p = suPass.dataset.real || "";
+  if (!u || !p) return;
+  localStorage.setItem(u, p);
+  showLogin();
+}
+
+function login() {
+  const u = liUser.value;
+  const p = liPass.dataset.real || "";
+  if (localStorage.getItem(u) === p) {
+    localStorage.setItem("loggedInUser", u);
+    window.location.href = "dashboard.html";
+  }
+}
+
+// ---------------- Password peek ----------------
+const peekTimers = new WeakMap();
+
+function setupPeek(input) {
+  input.addEventListener("input", e => {
+    let real = input.dataset.real || "";
+    const value = input.value;
+
+    // Determine added or removed char
+    if (value.length > real.length) {
+      const newChar = value[value.length - 1];
+      real += newChar;
+    } else if (value.length < real.length) {
+      real = real.slice(0, value.length);
+    }
+
+    input.dataset.real = real;
+
+    // Show last char for 0.15s
+    input.value = "*".repeat(real.length - 1) + real.slice(-1);
+
+    if (peekTimers.has(input)) clearTimeout(peekTimers.get(input));
+
+    const t = setTimeout(() => {
+      input.value = "*".repeat(real.length);
+    }, 150);
+
+    peekTimers.set(input, t);
+  });
+}
+
+// Initialize
+setupPeek(liPass);
+setupPeek(suPass);
+</script>
+
+</body>
+</html>

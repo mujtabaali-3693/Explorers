@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> Explorers </title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap');
+    body{
+      background: url(background-nature.jpg);
+       background-repeat: no-repeat; /* Prevents the image from repeating */
+            background-size: cover;      /* Scales the image to cover the entire container */
+            background-attachment: fixed;/* Fixes the image so it doesn't scroll with content */
+            
+    }
+    div{
+      background: transparent;
+      backdrop-filter: blur(3px);
+     margin-top: 25%;
+    margin-left: 35%;
+    text-align: center;
+    width: 35%;
+    border-radius: 100%;
+    border-color:rgb(255, 255, 255);
+      
+    }
+    button{
+font-family: "Google Sans Code", monospace;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  background: transparent;
+  color: rgb(50, 9, 255);
+    }
+    .h {
+      background: transparent;
+      backdrop-filter: blur(3px);
+      margin-left: 45%;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+<body>
+<div>
+<h2 id="welcome"></h2>
+<button onclick="logout()">Logout</button>
+
+<script>
+const user = localStorage.getItem("loggedInUser");
+
+if (!user) {
+  window.location.href = "index.html";
+}
+
+document.getElementById("welcome").innerText = "Welcome To Explorers , " + user;
+
+function logout() {
+  localStorage.removeItem("loggedInUser");
+  window.location.href = "index.html";
+}
+</script>
+</div>
+<a href="home.html">
+<button class="h">Move On!</button>
+</a>
+</body>
+</html>

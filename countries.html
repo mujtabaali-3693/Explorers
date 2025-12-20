@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Countries | Explorers</title>
+
+<style>
+   @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&display=swap');
+body {
+    background-image: url(background.jpg);
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+            background-size: cover;      /* Scales the image to cover the entire container */
+            background-attachment: fixed;/* Fixes the image so it doesn't scroll with content */ 
+    padding: 20px;
+    line-height: 1.8;
+}
+
+.search-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: transparent;
+    backdrop-filter: blur(3px);
+    padding: 10px;
+    border-bottom: 5px solid #68666656;
+    transition: top 0.3s;
+    z-index: 1000;
+}
+
+input {
+    padding: 6px;
+    font-size: 16px;
+    font-family: "Audiowide", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  background: transparent;
+  color: white;
+}
+
+button {
+    padding: 6px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: "Audiowide", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  background: transparent;
+  color: white;
+}
+
+.content {
+    margin-top: 70px; /* leave space for search bar */
+}
+
+.block {
+    margin-bottom: 600px; /* scroll space */
+}
+
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+}
+div{
+    color: rgb(0, 255, 76);
+    font-family: "DynaPuff", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+    letter-spacing: 1px;
+}
+div img{
+   height: 85px;
+   width: auto; 
+}
+</style>
+</head>
+<body>
+
+<div class="search-box" id="searchBox">
+    <input type="text" id="searchInput" placeholder="Type a word">
+    <button onclick="searchWord()">Search</button>
+    <a href="home.html">
+        <button>Back</button>
+    </a>
+</div>
+
+<div class="content">
+ <img src="jap.png" >
+ <h3>Japan</h3>
+ <h4>Why to Visit Japan?</h4>
+ <p>Japan is a top travel destination offering a unique
+     blend of ancient tradition and futuristic modernity, world-renowned cuisine, stunning natural scenery, and exceptional safety.</p>
+ <br><br><br>
+ <img src="ita.png" >
+ <h3>Italy</h3>
+ <h4>Why to visit Italy?</h4>
+ <p>Italy is a premier travel destination offering a perfect blend of world-class art, ancient history, unparalleled cuisine, and diverse landscapes ranging from the Alpine lakes to the Amalfi Coast. Visitors can explore iconic ruins in Rome, Renaissance masterpieces in Florence, fashion in Milan, and romantic canals in Venice, making it an essential, diverse experience. </p>
+ <br><br><br>
+<img src="fra.png">
+<h3>France</h3>
+<h4>Why to visit France?</h4>
+ <p>France is a top global destination offering an unmatched blend of iconic culture, world-renowned gastronomy, and diverse, stunning landscapes. Visitors flock to experience historic landmarks like the Eiffel Tower and Louvre, explore 6,000+ castles, enjoy world-class wine regions, and relax in coastal towns like St. Tropez, all while experiencing a rich, romantic, and historic atmosphere. </p>
+<br><br><br>
+<img src="nz.png">
+<h3>New Zealand</h3>
+<h4>Why to visit New Zeland</h4>
+<p>New Zealand is a top travel destination offering breathtaking, diverse landscapes—from soaring glaciers and fjords to geothermal hot springs and beaches—all within a compact area. It is a premier spot for adventure sports (bungy jumping, hiking), unique Māori culture, world-class wine, and, famously, as the "Real Middle-earth" filming locations for Lord of the Rings fans. </p>
+<br><br><br>
+<img src="aus.png">
+<h3>Australia</h3>
+<h4>Why to visit Australia</h4>
+<p>Australia is a top travel destination offering a unique blend of breathtaking natural wonders, such as the Great Barrier Reef and the Outback, alongside vibrant cities, stunning beaches, and diverse wildlife. Visitors are drawn by the laid-back, sunny lifestyle, rich Aboriginal culture, and incredible adventure opportunities, including scenic road trips like the Great Ocean Road. </p>
+<br><br><br>
+<img src="tha.png">
+<h3>Thailand</h3>
+<h4>Why to visit Thailand</h4>
+<p>Thailand is a top-tier global travel destination, renowned for its stunning, diverse landscapes—from tropical beaches in the south to lush mountains in the north—and rich, vibrant culture. It offers an incredible, affordable experience, featuring world-famous cuisine, thousands of ornate temples, bustling city life, and warm hospitality, making it a perfect getaway for adventure, relaxation, and culture. </p>
+</div>
+<script>
+// SEARCH + HIGHLIGHT
+function clearHighlights() {
+    document.querySelectorAll(".highlight").forEach(span => {
+        span.replaceWith(span.textContent);
+    });
+}
+
+function searchWord() {
+    clearHighlights();
+
+    const word = document.getElementById("searchInput").value.trim();
+    if (word === "") return;
+
+    const elements = document.querySelectorAll("p, h2");
+
+    for (let el of elements) {
+        const text = el.textContent;
+        const index = text.toLowerCase().indexOf(word.toLowerCase());
+
+        if (index !== -1) {
+            const before = text.slice(0, index);
+            const match = text.slice(index, index + word.length);
+            const after = text.slice(index + word.length);
+
+            el.innerHTML = before +
+                '<span class="highlight">' + match + '</span>' +
+                after;
+
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+            return;
+        }
+    }
+
+    alert("Word not found");
+}
+
+// HIDE/SHOW SEARCH BAR ON SCROLL
+let lastScrollTop = 0;
+const searchBox = document.getElementById("searchBox");
+
+window.addEventListener("scroll", function() {
+    let st = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (st > lastScrollTop) {
+        // Scroll Down
+        searchBox.style.top = "-60px"; // hide
+    } else {
+        // Scroll Up
+        searchBox.style.top = "0"; // show
+    }
+
+    lastScrollTop = st <= 0 ? 0 : st; // for mobile
+}, false);
+</script>
+
+</body>
+</html>
